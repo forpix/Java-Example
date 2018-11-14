@@ -43,7 +43,7 @@ pipeline {
 			steps {
 				sh '''
 					mvn install   -DskipTests
-					cp /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example/target/Hello.war /home/mdali/Downloads/apache-tomcat-8.5.34/webapps
+					cp /home/mdali/.jenkins/workspace/pipeline-pure/target/Hello.war /home/mdali/Downloads/apache-tomcat-8.5.34/webapps
                     firefox http://localhost:8080/Hello
 					'''
 			}
