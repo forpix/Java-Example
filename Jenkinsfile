@@ -7,6 +7,7 @@ pipeline {
 		stage ('checkout scm') {
 			steps {
 				sh '''
+				pwd;ls -a
 				cd /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example
 				git remote update 
 				git pull origin master
