@@ -1,7 +1,7 @@
 pipeline {
 	agent any
 	tools { 
-        maven 'Maven Tool'
+        maven 'maven'
 	}
 	stages  {
 		stage ('checkout scm') {
@@ -12,6 +12,7 @@ pipeline {
 				git pull origin master
 				echo "PATH = ${PATH}"
                 echo "M2_HOME = ${M2_HOME}"
+				
 				pwd;ls
 				'''
 			}
