@@ -8,7 +8,7 @@ pipeline {
 			steps {
 				sh '''
 				pwd;ls -a
-				cd /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example
+				cd Java-Example
 				git remote update 
 				git pull origin master
 				echo "PATH = ${PATH}"
