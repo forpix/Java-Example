@@ -4,18 +4,14 @@ pipeline {
         maven 'maven Tool'
 	}
 	stages  {
-		
 		stage ('checkout scm') {
-			cleanWs()
 			steps {
-				
 				sh '''
 				cd /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example
 				git remote update 
 				git pull origin master
 				echo "PATH = ${PATH}"
                 echo "M2_HOME = ${M2_HOME}"
-				
 				pwd;ls
 				'''
 			}
