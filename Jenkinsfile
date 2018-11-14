@@ -8,7 +8,6 @@ pipeline {
 			steps {
 				sh '''
 				pwd;ls -a
-				cd Java-Example
 				git remote update 
 				git pull origin master
 				echo "PATH = ${PATH}"
