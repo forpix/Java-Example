@@ -21,7 +21,6 @@ pipeline {
 			steps {
 				sh '''
 				pwd;ls -a
-			    cd /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example
 					mvn compile
 					'''
 			}
@@ -29,7 +28,6 @@ pipeline {
 	    stage ('Test') {
 			steps {
 				sh '''
-			    cd /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example
 					mvn test
 					'''
 			}
@@ -37,7 +35,6 @@ pipeline {
 	    stage ('Package') {
 			steps {
 				sh '''
-			    cd /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example
 					mvn package  -DskipTests
 					'''
 			}
@@ -45,9 +42,8 @@ pipeline {
 		stage ('Deploy') {
 			steps {
 				sh '''
-			    cd /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example
 					mvn install   -DskipTests
-					cp /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example/target/Hello.war /home/mdali/Downloads/apache-tomcat-8.5.31/webapps
+					cp /home/mdali/.jenkins/workspace/pipeline-pure/Java-Example/target/Hello.war /home/mdali/Downloads/apache-tomcat-8.5.34/webapps
                     firefox http://localhost:8080/Hello
 					'''
 			}
