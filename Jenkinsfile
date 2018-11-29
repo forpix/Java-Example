@@ -18,7 +18,7 @@ stage ('checkout scm') {
         checkout scm
     }
 stage ('lets give a check') {
-if (env.BRANCH_NAME == 'master') {
+if (branch == 'master') {
 echo 'we are in master branch'
      }
 }
