@@ -27,7 +27,4 @@ if (env.BRANCH_NAME == 'working') {
 echo 'we are in working branch'
     }
 }
-stage('test') {
-       echo 'jobs are completed'
-    }
 }
