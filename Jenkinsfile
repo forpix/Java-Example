@@ -13,6 +13,18 @@ import java.net.URL
 
 node {
 stage ('checkout scm') {
-        cleanWs()
+        cleanWs()  
+        git branch: "${params.Branch}", url: 'https://github.com/forpix/Java-Example.git'
+        checkout scm
+    }
+stage ('lets give a check') {
+if (env.BRANCH_NAME == 'master') {
+echo 'we are in master branch'
+     }
+}
+stage ('build the Job') {
+if (env.BRANCH_NAME == 'working') {
+echo 'we are in working branch'
+    }
 }
 }
