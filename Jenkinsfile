@@ -23,8 +23,9 @@ echo 'we are in master branch'
      }
 }
 stage ('build the Job') {
-if (env.BRANCH_NAME == 'working') {
+if (branch == 'working') {
 echo 'we are in working branch'
+        sh 'pwd;ls -a'
     }
 }
 }
