@@ -18,14 +18,16 @@ stage ('checkout scm') {
         checkout scm
     }
 stage ('lets give a check') {
-if (branch == 'master') {
+if (branch != 'master') {
 echo 'we are in master branch'
+currentBuild.result = 'UNSTABLE'
      }
 }
 stage ('build the Job') {
 if (branch == 'working') {
 echo 'we are in working branch'
         sh 'pwd;ls -a'
+        
     }
 }
 }
