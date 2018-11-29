@@ -14,6 +14,7 @@ import java.net.URL
 node {
 stage ('checkout scm') {
         cleanWs()  
+        git branch: "${params.Branch}", url: 'https://github.com/forpix/Java-Example.git'
         checkout scm
     }
 stage ('lets give a check') {
