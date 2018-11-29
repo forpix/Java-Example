@@ -24,7 +24,7 @@ echo 'we are in master branch'
 {
         echo 'since the job is running on not master'
         currentBuild.result = 'UNSTABLE'
-        exit 'failed due to not on requested branch'
+       error("Build failed because of this and that..")
         
 }
         
