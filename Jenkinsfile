@@ -24,6 +24,7 @@ echo 'we are in master branch'
 {
         echo 'since the job is running on not master'
         currentBuild.result = 'UNSTABLE'
+        post
         
 }
         
