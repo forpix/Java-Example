@@ -11,56 +11,71 @@ import groovy.json.JsonOutput
 import java.net.URL
    
 node {
-       
-    stage ('\u2756  git checkout scm') {
-     cleanWs()  
-    sh 'ls -a'
-     
-        echo'______________________________________________________________________________________________________'
-        def scmVars = checkout scm
-       
-        echo'______________________________________________________________________________________________________'
-        echo 'scm : the commit id is ' +scmVars.GIT_COMMIT
-        echo 'scm : the commit branch  is ' +scmVars.GIT_BRANCH
-        echo 'scm : the previous commit id is ' +scmVars.GIT_PREVIOUS_COMMIT
-       sh 'ls -a'
-       sh '''
-       git log --oneline -1 ${GIT_COMMIT} 
-       git log --format="medium" -1 ${GIT_COMMIT} 
-       '''
-       echo '========= ================== ================== =============== =========== = ===================='
-       echo '${BRANCH_NAME}'
-       sh  '${GIT_COMMIT}'
-         
-           sh '$GIT_BRANCH'
+ def call(stageName, tOut=5, closure) {
+   def isTriggeredByUser = false
+   def userId = ""
+   // Identify if build was triggered by user
+   for (def cause: currentBuild.rawBuild.getCauses()) {
+       // User pressed rebuild button
+       if (cause instanceof hudson.model.Cause.UserIdCause) {
+           isTriggeredByUser = true
+           userId = cause.getUserId()
+       }
+       // User pressed retrigger button
+       if (isClassExists("com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritUserCause") == true) {
+           if (Class.forName("com.sonyericsson.hudson.plugins.gerrit.trigger.hudsontrigger.GerritUserCause").isInstance(cause)) {
+               isTriggeredByUser = true
+               userId = cause.getUserName()
+           }
+       }
+   }
+   stage(stageName) {
+       def userInput = false
+       // if build is triggered by user then ask if user wants to skip the stage
+       if (isTriggeredByUser == true) {
+           echo "Pipeline started by user. Ask if user wants to skip stage ${stageName}"
+           msg = "Pipeline was triggered by user ${userId}. \nBecause of that you have an option to skip stages\n Will continue execution in ${tOut} min if no answer given"
+           inputParams = [[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: "Skip stage ${stageName}"]]
+           userInput = askUserToSkipStageWithTimeOut(msg, inputParams, tOut)
+       }
+       // User choose to skip the stage
+       if (userInput == true) {
+           echo "User decided to skip the stage"
+       } else {
+           // Otherwise we run it
+           closure.call()
+       }
+   }
+}
+
+def isClassExists(def classPath) {
+    try {
+        classname = Class.forName(classPath)
+        if (classname == null) {
+            return false
+        }
+        return true
+    } catch (ClassNotFoundException e) {
+        return false
     }
-    stage ('\u2756 Second stage') {
-         sh 'ls -a'
-       echo'====  This is other form ===='
-       def shrtCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'")
-       echo " the commit is'${shrtCommit}' "
-        
-       def commitBranch = sh(returnStdout: true, script: "git name-rev --name-only HEAD")
-       echo " the Branch is'${commitBranch}'"
-        
-       def commitEmail = sh(returnStdout: true, script: "git --no-pager show -s --format=\'%ae\'")
-       echo " the commiter email is'${commitEmail}'"
-        
-       def commitName = sh(returnStdout: true, script: "git --no-pager show -s --format=\'%an\'")
-       echo " the commiter name is'${commitName}'"
+}
+
+def askUserToSkipStageWithTimeOut(def msg, def inputParams, def tOut) {
+    def userInput = false
+    try {
+        timeout(time: tOut, unit: 'MINUTES') {
+            userInput = input(message: msg, parameters: inputParams)
+        }
+    } catch(error) {
+        def user = error.getCauses()[0].getUser()
+        if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
+            echo "Timeout. Return false"
+            return null
+        } else {
+            echo "Aborted by: [${user}]"
+            throw error
+        }
     }
-    stage ('\u2756 Third stage') {
-       
-       echo'===  This is from shell command in to varible ===='
-       sh 'git rev-parse HEAD > GIT_COMMIT'
-       def shortCommite = readFile('GIT_COMMIT')
-       echo "new way of fetching the Commit Id:'${shortCommite}'"
-        
-       sh "git rev-parse --abbrev-ref HEAD > GIT_BRANCHH"
-       def GIT_BRANCHH = readFile('GIT_BRANCHH')
-       echo "new way of fetching the Commit Id:'${GIT_BRANCHH}'"
-    }
-stageWithCheckPoint ('ConditionalEcho') { 
-    echo "User decided to run me"
+    return userInput
 }
       }
