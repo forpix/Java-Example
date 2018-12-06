@@ -60,7 +60,7 @@ node {
        def GIT_BRANCHH = readFile('GIT_BRANCHH')
        echo "new way of fetching the Commit Id:'${GIT_BRANCHH}'"
     }
-stageWithCheckPoint("ConditionalEcho") { 
+stageWithCheckPoint ('ConditionalEcho') { 
     echo "User decided to run me"
 }
       }
