@@ -9,12 +9,10 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import java.net.URL
-    timestamps()
    
- 
 node {
        
-stage '\u2756  git checkout scm'
+    stage '\u2756  git checkout scm' {
      cleanWs()  
     sh 'ls -a'
      
@@ -35,8 +33,8 @@ stage '\u2756  git checkout scm'
        sh  '${GIT_COMMIT}'
          
            sh '$GIT_BRANCH'
-       
-stage '\u2756 Second stage'
+    }
+    stage '\u2756 Second stage' {
          sh 'ls -a'
        echo'====  This is other form ===='
        def shrtCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'")
@@ -50,8 +48,8 @@ stage '\u2756 Second stage'
         
        def commitName = sh(returnStdout: true, script: "git --no-pager show -s --format=\'%an\'")
        echo " the commiter name is'${commitName}'"
-        
-stage '\u2756 Third stage'
+    }
+    stage '\u2756 Third stage' {
        
        echo'===  This is from shell command in to varible ===='
        sh 'git rev-parse HEAD > GIT_COMMIT'
@@ -61,7 +59,8 @@ stage '\u2756 Third stage'
        sh "git rev-parse --abbrev-ref HEAD > GIT_BRANCHH"
        def GIT_BRANCHH = readFile('GIT_BRANCHH')
        echo "new way of fetching the Commit Id:'${GIT_BRANCHH}'"
-        
-stage '\u2756 Fourth stage'
-            echo 'simple stage'    
+    }
+stageWithCheckPoint("ConditionalEcho") { 
+    echo "User decided to run me"
+}
       }
