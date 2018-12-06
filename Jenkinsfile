@@ -10,7 +10,7 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import java.net.URL
    
-node {
+
  def call(stageName, tOut=5, closure) {
    def isTriggeredByUser = false
    def userId = ""
@@ -78,4 +78,4 @@ def askUserToSkipStageWithTimeOut(def msg, def inputParams, def tOut) {
     }
     return userInput
 }
-      }
+
