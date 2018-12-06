@@ -18,10 +18,10 @@ stage '\u2756  git checkout scm'
      cleanWs()  
     sh 'ls -a'
         
-        echo'________________________________________________________________________________________________________________________'
+        echo'______________________________________________________________________________________________________'
         def scmVars = checkout scm
        
-        echo'_________________________________________________________________________________________________________________________'
+        echo'______________________________________________________________________________________________________'
         echo 'scm : the commit id is ' +scmVars.GIT_COMMIT
         echo 'scm : the commit branch  is ' +scmVars.GIT_BRANCH
         echo 'scm : the previous commit id is ' +scmVars.GIT_PREVIOUS_COMMIT
@@ -63,5 +63,5 @@ stage '\u2756 Third stage'
        echo "new way of fetching the Commit Id:'${GIT_BRANCHH}'"
         
 stage '\u2756 Fourth stage'
-                
+            echo 'simple stage'    
       }
