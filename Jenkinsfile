@@ -12,7 +12,7 @@ import java.net.URL
    
 node {
        
-    stage '\u2756  git checkout scm' {
+    stage ('\u2756  git checkout scm') {
      cleanWs()  
     sh 'ls -a'
      
@@ -34,7 +34,7 @@ node {
          
            sh '$GIT_BRANCH'
     }
-    stage '\u2756 Second stage' {
+    stage ('\u2756 Second stage') {
          sh 'ls -a'
        echo'====  This is other form ===='
        def shrtCommit = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'")
@@ -49,7 +49,7 @@ node {
        def commitName = sh(returnStdout: true, script: "git --no-pager show -s --format=\'%an\'")
        echo " the commiter name is'${commitName}'"
     }
-    stage '\u2756 Third stage' {
+    stage ('\u2756 Third stage') {
        
        echo'===  This is from shell command in to varible ===='
        sh 'git rev-parse HEAD > GIT_COMMIT'
