@@ -9,7 +9,7 @@ import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
 import java.net.URL
-
+    timestamps()
    
  
 node {
@@ -17,7 +17,7 @@ node {
 stage '\u2756  git checkout scm'
      cleanWs()  
     sh 'ls -a'
-         timestamps()
+     
         echo'______________________________________________________________________________________________________'
         def scmVars = checkout scm
        
